@@ -14,6 +14,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.ui.viewmodel.AuthViewModel
+import com.example.myapplication.data.model.Player // <-- NUEVO IMPORT
 
 // Colores del tema
 val DarkBackground = Color(0xFF121212)
@@ -24,7 +25,7 @@ val CardBackground = Color(0xFF1E1E1E)
 @Composable
 fun LoginScreen(
     viewModel: AuthViewModel,
-    onLoginSuccess: () -> Unit
+    onLoginSuccess: (Player) -> Unit // <-- AHORA EXIGE PASAR EL JUGADOR
 ) {
     val player by viewModel.loggedInPlayer.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
@@ -32,10 +33,10 @@ fun LoginScreen(
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    // Si el jugador se loguea exitosamente, navegamos al garaje
+    // Si el jugador se loguea exitosamente, navegamos al garaje enviando sus datos
     LaunchedEffect(player) {
         if (player != null) {
-            onLoginSuccess()
+            onLoginSuccess(player!!) // <-- ENVIAMOS AL JUGADOR AQUÍ
         }
     }
 
@@ -95,7 +96,7 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Botones inspirados en tu imagen
+                // Botones
                 Button(
                     onClick = { viewModel.login(username, password) },
                     modifier = Modifier.fillMaxWidth().height(50.dp),

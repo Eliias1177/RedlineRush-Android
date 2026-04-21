@@ -66,4 +66,5 @@ dependencies {
     // ViewModel y Compose (Para mantener los datos vivos y enlazarlos a la UI)
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+    implementation("com.microsoft.signalr:signalr:8.0.0")
 }

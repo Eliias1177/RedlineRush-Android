@@ -2,10 +2,8 @@ package com.example.myapplication.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,48 +12,77 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.data.model.RaceEvent
+import com.example.myapplication.data.model.Player
 
 @Composable
 fun MapScreen(
-    onEventSelected: (RaceEvent) -> Unit,
+    player: Player,
+    onOfflineRace: (String, Int) -> Unit, // Dificultad, Vida del Jefe
+    onOnlineRace: () -> Unit,
     onBack: () -> Unit
 ) {
-    val events = listOf(
-        RaceEvent("CALLES LOCALES", "Novato", 200, 220),
-        RaceEvent("CIRCUITO NOCTURNO", "Profesional", 600, 450),
-        RaceEvent("DUELO DE JEFES", "Jefe de Calle", 2000, 850)
-    )
-
     Column(
         modifier = Modifier.fillMaxSize().background(Color(0xFF0A0A0A)).padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("MAPA DE CARRERAS", color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(vertical = 24.dp))
+        Spacer(modifier = Modifier.height(32.dp))
+        Text("ZONA DE CARRERAS", color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
+        Text("SELECCIONA TU EVENTO", color = Color.Gray, fontSize = 14.sp, letterSpacing = 2.sp)
+        Spacer(modifier = Modifier.height(32.dp))
 
-        LazyColumn(modifier = Modifier.weight(1f)) {
-            items(events) { event ->
-                Card(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp).clickable { onEventSelected(event) },
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))
-                ) {
-                    Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(event.title, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                            Text("Dificultad: ${event.difficulty}", color = when(event.difficulty) {
-                                "Jefe de Calle" -> Color.Red
-                                "Profesional" -> Color.Yellow
-                                else -> Color.Green
-                            }, fontSize = 14.sp)
-                        }
-                        Text("PREMIO: $${event.reward}", color = Color.Cyan, fontWeight = FontWeight.Black)
-                    }
-                }
+        // Botón MULTIJUGADOR ONLINE
+        Button(
+            onClick = onOnlineRace,
+            modifier = Modifier.fillMaxWidth().height(80.dp).border(2.dp, Color(0xFF00E5FF), RoundedCornerShape(12.dp)),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E222A)),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text("🌐 1 VS 1 ONLINE", color = Color(0xFF00E5FF), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text("Compite contra otro jugador en tiempo real", color = Color.LightGray, fontSize = 12.sp)
             }
         }
 
-        Button(onClick = onBack, modifier = Modifier.fillMaxWidth().padding(top = 16.dp), colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)) {
-            Text("VOLVER AL GARAJE")
+        Spacer(modifier = Modifier.height(32.dp))
+        Text("--- JEFES DE CALLE (OFFLINE) ---", color = Color.Gray, fontSize = 14.sp)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Jefe 1: Novato
+        Button(
+            onClick = { onOfflineRace("Novato", 200) },
+            modifier = Modifier.fillMaxWidth().height(60.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF424242))
+        ) {
+            Text("VS Muscle Car (Novato)", color = Color.White)
+        }
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Jefe 2: Profesional
+        Button(
+            onClick = { onOfflineRace("Profesional", 450) },
+            modifier = Modifier.fillMaxWidth().height(60.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD32F2F))
+        ) {
+            Text("VS Mustang GT (Profesional)", color = Color.White)
+        }
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Jefe 3: Jefe de Calle
+        Button(
+            onClick = { onOfflineRace("Jefe de Calle", 750) },
+            modifier = Modifier.fillMaxWidth().height(60.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB0BEC5))
+        ) {
+            Text("VS GT-R Nismo (Jefe de Calle)", color = Color.Black, fontWeight = FontWeight.Bold)
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+        Button(
+            onClick = onBack,
+            modifier = Modifier.fillMaxWidth().height(50.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
+        ) {
+            Text("VOLVER AL GARAJE", color = Color.White)
         }
     }
 }
