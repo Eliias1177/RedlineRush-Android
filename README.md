@@ -8,7 +8,7 @@ Aplicación móvil nativa de carreras inspirada en mecánicas de CSR Racing, des
 ## Institución
 **Universidad Politécnica de la Región Ribereña**
 
-## 🛠️ Tecnologías
+## Tecnologías
 * Kotlin / Jetpack Compose
 * SignalR (Real-time Multiplayer)
 * Retrofit (API Rest)
